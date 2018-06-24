@@ -1,48 +1,42 @@
 Fabric CA User's Guide
 ======================
 
-The Hyperledger Fabric CA is a Certificate Authority (CA)
-for Hyperledger Fabric.
+Hyperledger Fabric CA 就是Fabric的证书颁发机构(CA)。
 
-It provides features such as:
+它做以下这些事:
 
-  * registration of identities, or connects to LDAP as the user
-    registry
-  * issuance of Enrollment Certificates (ECerts)
-  * issuance of Transaction Certificates (TCerts), providing both
-    anonymity and unlinkability when transacting on a Hyperledger Fabric
-    blockchain
-  * certificate renewal and revocation
+  * 身份信息注册, 或者连接到LDAP上创建用户信息；
+  * 签发登记证书 (ECerts)；
+  * 签发交易证书 (TCerts), 对在Fabric区块链上的交易实现不可连接性和匿名性；
+  * 证书更新和吊销。
 
-Hyperledger Fabric CA consists of both a server and a client component as
-described later in this document.
+Fabric CA由一个客户端和一个服务端组成，我们一会讨论。
 
-For developers interested in contributing to Hyperledger Fabric CA, see the
-`Fabric CA repository <https://github.com/hyperledger/fabric-ca>`__ for more
-information.
+如果想对Fabric CA贡献你的开发能力, 请参见
+`Fabric CA 仓库 <https://github.com/hyperledger/fabric-ca>`__ 。
 
 
 .. _Back to Top:
 
-Table of Contents
+内容大纲
 -----------------
 
-1. `Overview`_
+1. `概览`_
 
-2. `Getting Started`_
+2. `开始`_
 
-   1. `Prerequisites`_
-   2. `Install`_
-   3. `Explore the Fabric CA CLI`_
+   1. `前提条件`_
+   2. `安装`_
+   3. `使用Fabric CA CLI`_
 
-3. `File Formats`_
+3. `文件格式`_
 
-   1. `Fabric CA server's configuration file format`_
-   2. `Fabric CA client's configuration file format`_
+   1. `Fabric CA server的配置文件`_
+   2. `Fabric CA client的配置文件`_
 
-4. `Configuration Settings Precedence`_
+4. `几种配置方法及其优先级别`_
 
-5. `Fabric CA Server`_
+5. `Fabric CA 服务器`_
 
    1. `Initializing the server`_
    2. `Starting the server`_
@@ -52,7 +46,7 @@ Table of Contents
    6. `Setting up multiple CAs`_
    7. `Enrolling an intermediate CA`_
 
-6. `Fabric CA Client`_
+6. `Fabric CA 客户端`_
 
    1. `Enrolling the bootstrap identity`_
    2. `Registering a new identity`_
@@ -703,7 +697,7 @@ the client's home directory (see `Fabric CA Client <#client>`__ section more inf
 
 `Back to Top`_
 
-Configuration Settings Precedence
+几种配置方法及其优先级别
 ---------------------------------
 
 The Fabric CA provides 3 ways to configure settings on the Fabric CA server
