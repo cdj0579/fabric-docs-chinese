@@ -6,7 +6,8 @@
 .. toctree::
    :maxdepth: 2
    :caption: 开始学习吧
- 
+   
+   build_network
    users-guide
 
 .. Licensed under Creative Commons Attribution 4.0 International License
