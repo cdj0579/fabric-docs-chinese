@@ -1237,20 +1237,30 @@ Fabric CA 客户端
 
 这一节讲述如何使用fabric-ca-client的命令。
 
-Fabric CA client的home目录按照如下顺序决定:
+首先，要先确定Fabric CA client的home目录，其决定顺序如下:
 
-  - ``FABRIC_CA_CLIENT_HOME`` 环境变量
-  - ``FABRIC_CA_HOME`` 环境变量
-  - ``CA_CFG_PATH`` 环境变量
+  - 命令行 -home 选项 
+  - 环境变量 ``FABRIC_CA_CLIENT_HOME`` 
+  - 环境变量 ``FABRIC_CA_HOME``
+  - 环境变量 ``CA_CFG_PATH``
   - ``$HOME/.fabric-ca-client``
 
 
-以下命令假设你已经在client的home目录下放了配置文件。
+请将配置文件放home目录下后，完成以下过程。
 
-登记bootstrap身份
+enroll the bootstrap identity
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-可定制化CSR部分，其中``csr.cn``必须设置为bootstrap身份的ID。CSR默认值如下：
+大吉注：
+	CA的账号概念是：先注册identity，它带有一个enrollment id，然后可以enroll具体的账号，可以在csr里指定属性，张三，李四，王二麻子
+    从创建超级管理员到注册用户过程如下：
+	bootstrap identity即超级管理员identity，注册是在ca-server初始化时完成的（用-b 选项指定enrollment ID和密码）。
+    client端配置好CSR，并enroll了超级管理员identity到home目录下的msp
+	client去向CA register user的identity，CA认可client的msp
+	client去向CA enroll 刚才user的msp。  
+
+首以下根据需要自定义client home目录下配置文件中的CSR部分，其中``csr.cn``必须设置为bootstrap identity的enrollment ID。
+用fabric-ca-client gencsr -csr.cn admin 生成的客户端配置文件中的CSR默认值如下：
 
 .. code:: yaml
 
@@ -1274,17 +1284,17 @@ Fabric CA client的home目录按照如下顺序决定:
 
 请见 `CSR fields <#csr-fields>`__ 查看各配置项的描述.
 
-然后运行 ``fabric-ca-client enroll`` 命令去登记一个身份。例如,
-以下命令会登记一个ID是 **admin** 密码是 **adminpw** 的身份，
-调用的是运行在本地的监听7054端口的Fabric CA 服务器。
+然后运行 ``fabric-ca-client enroll`` 命令去enroll一个identity。例如,
+以下命令会enroll一个ID是 **admin** 密码是 **adminpw** 的identity，
+其调用的是运行在本地的监听7054端口的Fabric CA 服务器。
 
 .. code:: bash
 
     export FABRIC_CA_CLIENT_HOME=$HOME/fabric-ca/clients/admin
     fabric-ca-client enroll -u http://admin:adminpw@localhost:7054
 
-enroll命令会保存一个enrollment 证书 (ECert), 以及对应的私钥文件和CA证书链 PEM 文件
-到Fabric CA client的 ``msp`` 子目录下。
+enroll命令会生成一份enrollment 证书 (ECert), 以及对应的私钥文件和CA根证书 PEM 文件
+，保存在Fabric CA client的 ``msp`` 子目录下。
 提示信息里会告诉你保存到哪的目录下了。
 
 注册一个新身份
