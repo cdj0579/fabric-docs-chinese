@@ -48,13 +48,13 @@ Fabric CA由一个客户端和一个服务端组成，我们一会讨论。
 
 6. `Fabric CA 客户端`_
 
-   1. `登记bootstrap身份`_
+   1. `enroll the bootstrap identity`_
    2. `注册一个新identity`_
-   3. `登记一个peer身份`_
-   4. `重新登记一个身份`_
-   5. `注销一个证书或身份`_
+   3. `Enroll一个 Peer identity`_
+   4. `重新enroll一个identity`_
+   5. `撤销一个证书或一个identity`_
    6. `启用TLS`_
-   7. `Contact specific CA instance`_
+   7. `指定 CA enroll`_
 
 概要说明
 --------
@@ -1297,7 +1297,7 @@ enroll命令会生成一份enrollment 证书 (ECert), 以及对应的私钥文�
 ，保存在Fabric CA client的 ``msp`` 子目录下。
 提示信息里会告诉你保存到哪的目录下了。
 
-注册一个新身份
+注册一个新identity
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 发起注册请求的身份必须是已经登记（enroll）过的，同时也必须有权限去注册要注册的相应类型的身份。
@@ -1375,7 +1375,7 @@ CA server会返回一个密码，用于这个identity去enroll。
     export FABRIC_CA_CLIENT_HOME=$HOME/fabric-ca/clients/admin
     fabric-ca-client register --id.name peer1 --id.type peer --id.affiliation org1.department1 --id.secret peer1pw
 
-Enroll一个 Peer 身份
+Enroll一个 Peer identity
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 注册好身份后就可以enroll，enroll需要使用刚才注册的enrollmentID和密码(比如上节例子里的 *password*
@@ -1413,7 +1413,7 @@ enroll一个orderer也类似，只不过-M指定的是orderer.yaml里的 'LocalM
     export FABRIC_CA_CLIENT_HOME=$HOME/fabric-ca/clients/peer1
     fabric-ca-client getcacert -u http://localhost:7055 -M $FABRIC_CA_CLIENT_HOME/msp
 
-重新enroll一个身份
+重新enroll一个identity
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 假设你的证书到期了，就需要用以下命令重新enroll一份了
@@ -1423,7 +1423,7 @@ enroll一个orderer也类似，只不过-M指定的是orderer.yaml里的 'LocalM
     export FABRIC_CA_CLIENT_HOME=$HOME/fabric-ca/clients/peer1
     fabric-ca-client reenroll
 
-撤销一个证书或一个身份
+撤销一个证书或一个identity
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 撤销一个identity会撤销他的所有证书，并阻止他再得到新的证书，撤销一个证书只是使一个证书无效。
@@ -1470,7 +1470,7 @@ enroll一个orderer也类似，只不过-M指定的是orderer.yaml里的 'LocalM
    aki=$(openssl x509 -in userecert.pem -text | awk '/keyid/ {gsub(/ *keyid:|:/,"",$1);print tolower($0)}')
    fabric-ca-client revoke -s $serial -a $aki -r affiliationchange
 
-使用 TLS
+启用TLS
 ~~~~~~~~~~~~
 
 这一节讲如何给 Fabric CA client配置TLS
@@ -1492,7 +1492,7 @@ enroll一个orderer也类似，只不过-M指定的是orderer.yaml里的 'LocalM
 
 **client**选项只有在server中配置了相同的TLS配置才用得到（大吉注：即双向认证）。
 
-联系指定的 CA 
+指定 CA enroll 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 如果服务器上跑了多个CA，如果未指定CA名，则将会访问到fabric-ca 服务上的默认CA。
